@@ -4,6 +4,7 @@ import repository.Repository;
 
 import java.util.Comparator;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * Represents a repository of {@code LegoSet} objects.
@@ -91,6 +92,41 @@ public class LegoSetRepository extends Repository<LegoSet> {
 
     }
 
+    //second part
+
+    /**
+     * Return with true if the given theme is exist in the LEGO set, and false otherwise.
+     * @param theme a Lego set theme.
+     * @return with true if the given theme is exist in the LEGO set, and false otherwise.
+     */
+    public boolean isThemeExist(String theme)
+    {
+        return getAll().stream().
+            map(LegoSet::getTheme).
+            anyMatch(s -> s.equals(theme));
+    }
+
+    /**
+     * Print out the first character in the name of LEGO sets.
+     */
+    public void printFirstCharacterOfName()
+    {
+         getAll().stream().
+                map(LegoSet::getName).
+                flatMap(s -> Stream.of(s.charAt(0)))
+                 .forEach(System.out::println);
+    }
+    /**
+     * Return with the minimal number of pieces and if it cannot be calculated then return with {@code Integer.MAX_VALUE} otherwise.
+     * @return with the minimal number of pieces and if it cannot be calculated then return with {@code Integer.MAX_VALUE} otherwise.
+     */
+    public int minPiece()
+    {
+        return getAll().stream().
+                map(LegoSet::getPieces).
+                reduce(Integer.MAX_VALUE,Integer::min);
+    }
+
 
     public static void main(String[] args)
     {
@@ -101,6 +137,12 @@ public class LegoSetRepository extends Repository<LegoSet> {
         System.out.println(repository.maxLegoSetByPieces().getName());
         repository.printFirstLegoSetsNumberByLimit(5);
         repository.printLowerCaseLegoSetsThemes();
+
+        //second part
+        System.out.println(repository.isThemeExist("ASDASDASDASD"));
+        repository.printFirstCharacterOfName();
+        System.out.println(repository.minPiece());
+
 
 
     }
